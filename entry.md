@@ -120,14 +120,7 @@ use [hindent](https://github.com/chrisdone/hindent) to format the code.
 
 You can install *hindent* with stack as well: `stack install hindent`.
 
-    function! Format() "{{{
-        " * Removes trailing white spaces
-        " * Removes blank lines at the end of the file
-        " * Replaces tabs with spaces
-        " * Re-Indent
-        "
-        " * Clear 'formatprg' so `gq` can be used with the default
-        "   behavior
+    function! Format()
         silent! execute 'norm! mz'
 
         if &ft ==? 'haskell'
@@ -176,3 +169,44 @@ f x
 ```
 
 So much better!
+
+
+### Easy arrows generation
+
+In Haskell, operators like `->` and `=>` are very common and I find it
+cumbersome to type theme manually. Lets define a function:
+
+    function! Make_arrow(type)
+        if a:type
+            exe "norm! a-> "
+            exe "startinsert!"
+        else
+            exe "norm! a=> "
+            exe "startinsert!"
+        endif
+    endfunction
+
+And some insert mode mappings:
+
+    au FileType haskell inoremap <buffer> ;; <ESC>:call Make_arrow(1)<CR>
+    au FileType haskell inoremap <buffer> ;: <ESC>:call Make_arrow(0)<CR>
+
+So while in insert mode typing `;;` or `;:` will insert `->` or `=>`
+respectively.
+
+
+### Types abbreviations
+
+Maybe i'm a terrible typist, but writing the first upper case letter of the most
+common types hurst my pinkie. So by using some insert mode abbreviations:
+
+    au FileType haskell inoreab <buffer> int Int
+    au FileType haskell inoreab <buffer> integer Integer
+    au FileType haskell inoreab <buffer> string String
+    au FileType haskell inoreab <buffer> double Double
+    au FileType haskell inoreab <buffer> float Float
+    au FileType haskell inoreab <buffer> true True
+    au FileType haskell inoreab <buffer> false False
+
+Now I can type all lower case without having to bother with the *shift* key and
+the capitalized version will be inserted instead.
