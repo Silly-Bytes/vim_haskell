@@ -110,3 +110,69 @@ f Nothing = Right ()
 
 Neat!, go ahead and play around with the other mappings, you'll be not
 disappointed.
+
+
+### Code formatting, Code cleaning
+
+Lets define a function that remove trailing white spaces, remove any `tab` and
+convert it to `spaces`, do re-indentation, and temporally define `formatprg` to
+use [hindent](https://github.com/chrisdone/hindent) to format the code.
+
+You can install *hindent* with stack as well: `stack install hindent`.
+
+    function! Format() "{{{
+        " * Removes trailing white spaces
+        " * Removes blank lines at the end of the file
+        " * Replaces tabs with spaces
+        " * Re-Indent
+        "
+        " * Clear 'formatprg' so `gq` can be used with the default
+        "   behavior
+        silent! execute 'norm! mz'
+
+        if &ft ==? 'haskell'
+            setlocal formatprg=hindent\ --style\ chris-done
+            silent! execute 'norm! gggqG'
+        endif
+
+        silent! call RemoveTrailingSpaces()
+        silent! execute 'retab'
+        silent! execute 'gg=G'
+        silent! execute 'norm! `z'
+        setlocal formatprg=
+    endfunction
+
+
+Now we could use `g=` to invoke the function:
+
+    nnoremap <silent>g= :call Format()<CR>
+
+One extra thing left is to align stuff in the code so it looks nicer
+
+    au FileType haskell nmap <silent><buffer> g<space> vii<ESC>:silent!'<,'> EasyAlign /->/<CR>
+
+Take for instance this very dumb example for the sake of the argument:
+
+```Haskell
+module Hello where
+
+f :: Int -> String
+f x
+  | x == 1 -> "1"
+  | x == (1+1) -> "2"
+  | x == (1+1+1) -> "3"
+```
+
+Using `g<space>` we got:
+
+```Haskell
+module Hello where
+
+f :: Int -> String
+f x
+  | x == 1       -> "1"
+  | x == (1+1)   -> "2"
+  | x == (1+1+1) -> "3"
+```
+
+So much better!
