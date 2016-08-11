@@ -50,7 +50,7 @@ omnifunction. Use it by defining the local `omnifunc`:
 
     au FileType haskell setlocal omnifunc=necoghc#omnifunc
 
-![](./neco-ghc.png)
+![](./omni.gif)
 
 
 ### Convenient mappings
@@ -108,6 +108,8 @@ f (Just a) = Left a
 f Nothing = Right ()
 ```
 
+![](./ghcmod.gif)
+
 Neat!, go ahead and play around with the other mappings, you'll be not
 disappointed.
 
@@ -147,26 +149,29 @@ One extra thing left is to align stuff in the code so it looks nicer
 Take for instance this very dumb example for the sake of the argument:
 
 ```Haskell
-module Hello where
+module Test where
 
 f :: Int -> String
-f x
-  | x == 1 -> "1"
-  | x == (1+1) -> "2"
-  | x == (1+1+1) -> "3"
+f x = case x of
+    1   -> "1"
+    2 ->   "2"
+    3 -> "3"
 ```
 
 Using `g<space>` we got:
 
 ```Haskell
-module Hello where
+module Test where
 
 f :: Int -> String
-f x
-  | x == 1       -> "1"
-  | x == (1+1)   -> "2"
-  | x == (1+1+1) -> "3"
+f x =
+  case x of
+    1 -> "1"
+    2 -> "2"
+    3 -> "3"
 ```
+
+![](./format.gif)
 
 So much better!
 
