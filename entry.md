@@ -51,3 +51,20 @@ omnifunction. Use it by defining the local `omnifunc`:
     au FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 ![](./neco-ghc.png)
+
+
+### Convenient mappings
+
+Using [vim-dispatch](https://github.com/tpope/vim-dispatch),
+[neomake](https://github.com/neomake/neomake) and `g` prefixed mappings we can
+now build with `gj` ([Stack](https://docs.haskellstack.org/en/stable/README/),
+lint with `gl`, and test with `gk`. Also use `gI` to jump to the first *import*.
+
+You will need the Stack tool of course and *hlint* that you can install with
+`stack install hlint`.
+
+    au FileType haskell nnoremap <buffer> gl :Neomake<CR>
+    au FileType haskell nnoremap <buffer> gj :Make build<CR>
+    au FileType haskell nnoremap <buffer> gk :Make test<CR>
+    au FileType haskell nnoremap <buffer> gI gg /\cimport<CR><ESC>:noh<CR>
+
