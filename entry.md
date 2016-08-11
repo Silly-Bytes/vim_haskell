@@ -68,3 +68,45 @@ You will need the Stack tool of course and *hlint* that you can install with
     au FileType haskell nnoremap <buffer> gk :Make test<CR>
     au FileType haskell nnoremap <buffer> gI gg /\cimport<CR><ESC>:noh<CR>
 
+
+### Ghc-mod integration
+
+[ghc-mod](https://hackage.haskell.org/package/ghc-mod) is the *Happy Haskell
+Programming package*! With a whole bunch of functionality, here we will be using
+just a few:
+
+* Type inserting
+* Case splitting
+* Type asserting
+
+You need the *ghc-mod* package: `stack install ghc-mod` and the [ghcmod-vim
+plugin](https://github.com/eagletmt/ghcmod-vim).
+
+    au FileType haskell nnoremap <silent><buffer> git :GhcModTypeInsert<CR>
+    au FileType haskell nnoremap <silent><buffer> gfs :GhcModSplitFunCase<CR>
+    au FileType haskell nnoremap <silent><buffer> gtt :GhcModType<CR>
+
+
+`git` (*g insert type*) will insert the missing type declaration of an
+expression, take for instance this Haskell code:
+
+```haskell
+module Hello where
+
+f (Just a) = Left a
+f Nothing = Right ()
+```
+
+With the cursor in the first `f` (the function name) using the `tt` mapping will
+produce:
+
+```haskell
+module Hello where
+
+f :: Maybe a -> Either a ()
+f (Just a) = Left a
+f Nothing = Right ()
+```
+
+Neat!, go ahead and play around with the other mappings, you'll be not
+disappointed.
