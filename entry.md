@@ -1,7 +1,7 @@
 # Vim + Haskell
 
 So you're writing in the right language using the right tool already, but lets
-put some extra magic under our leaves.
+put some extra magic under our sleeves.
 
 
 ## Expectations
