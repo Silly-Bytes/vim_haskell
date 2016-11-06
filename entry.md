@@ -16,9 +16,9 @@ put some extra magic under our sleeves.
     * Type inserting
     * Case splitting
     * Type asserting
+* Hlint integration
 * Code formatting
-* Code cleaning
-    * Trailing whitespace
+    * Trailing white space
     * Trailing blank lines
     * Spaces over tabs
 * Easy arrows generation
@@ -112,6 +112,23 @@ f Nothing = Right ()
 
 Neat!, go ahead and play around with the other mappings, you'll be not
 disappointed.
+
+
+### Hlint integration
+
+By default [Neomake](https://github.com/neomake/neomake) will use *hlint* on the
+current file when the `:Neomake` command is invoked on a Haskell source file, so
+by adding a mapping:
+
+    au FileType haskell nnoremap <buffer> gll :Neomake<CR>
+
+`gll` will open the location list with the lints, which takes us to some
+convenience mappings:
+
+    au FileType haskell nnoremap <buffer><silent> gl<space> :call ToggleLocationList()<CR>
+    au FileType haskell nnoremap <buffer><silent> glc :sign unplace *<CR>
+
+For toggling the location list `gl<space` and cleaning the lints `glc`.
 
 
 ### Code formatting, Code cleaning
