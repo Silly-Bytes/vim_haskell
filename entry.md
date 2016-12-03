@@ -7,7 +7,7 @@ put some extra magic under our sleeves.
 ## Expectations
 
 * Omnicompletion
-* Convenient mappings for
+* Compilation and testing
     * Building
     * Linting
     * Testing
@@ -53,20 +53,34 @@ omnifunction. Use it by defining the local `omnifunc`:
 ![](./omni.gif)
 
 
-### Convenient mappings
+### Compilation and testing
 
-Using [vim-dispatch](https://github.com/tpope/vim-dispatch),
-[neomake](https://github.com/neomake/neomake) and `g` prefixed mappings we can
-now build with `gj` ([Stack](https://docs.haskellstack.org/en/stable/README/),
-lint with `gl`, and test with `gk`. Also use `gI` to jump to the first *import*.
+I've contributed the GHC compiler plugin to upstream Vim recently, but it may
+take a while before you get the latest vim runtime from your distribution. So in
+the meantime you can install it like any other plugin from the github repository
+here: https://github.com/alx741/ghc.vim
+
+Then load it for the Haskell filetype in you vimrc:
+
+```vim
+augroup ft_haskell
+    au!
+    au FileType haskell compiler ghc
+augroup END
+```
+
+Taking advantage of vim 8 asynchronous job control using the
+[asyncrun.vim](https://github.com/skywind3000/asyncrun.vim) plugin, we can
+define some convenient mappings for building and testing using Haskell *stack*:
+
+```vim
+au FileType haskell setlocal makeprg=stack
+au FileType haskell nnoremap <buffer> gj :write<CR> :exec "AsyncRun " . &makeprg . " build"<CR>
+au FileType haskell nnoremap <buffer> gk :write<CR> :exec "AsyncRun " . &makeprg . " test"<CR>
+```
 
 You will need the Stack tool of course and *hlint* that you can install with
 `stack install hlint`.
-
-    au FileType haskell nnoremap <buffer> gl :Neomake<CR>
-    au FileType haskell nnoremap <buffer> gj :Make build<CR>
-    au FileType haskell nnoremap <buffer> gk :Make test<CR>
-    au FileType haskell nnoremap <buffer> gI gg /\cimport<CR><ESC>:noh<CR>
 
 
 ### Ghc-mod integration
@@ -120,15 +134,20 @@ By default [Neomake](https://github.com/neomake/neomake) will use *hlint* on the
 current file when the `:Neomake` command is invoked on a Haskell source file, so
 by adding a mapping:
 
-    au FileType haskell nnoremap <buffer> gll :Neomake<CR>
+```vim
+au FileType haskell nnoremap <buffer> gll :Neomake<CR>
+```
 
 `gll` will open the location list with the lints, which takes us to some
 convenience mappings:
 
-    au FileType haskell nnoremap <buffer><silent> gl<space> :call ToggleLocationList()<CR>
-    au FileType haskell nnoremap <buffer><silent> glc :sign unplace *<CR>
+```vim
+au FileType haskell nnoremap <buffer><silent> gl<space> :call ToggleLocationList()<CR>
+au FileType haskell nnoremap <buffer><silent> glc :sign unplace *<CR>
+```
 
-For toggling the location list `gl<space` and cleaning the lints `glc`.
+So now is possible to toggle the location list with `gl<space>` and clear it
+with `glc`.
 
 
 ### Code formatting, Code cleaning
