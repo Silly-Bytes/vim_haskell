@@ -30,6 +30,7 @@ put some extra magic under our sleeves.
     * Spaces over tabs
 * Easy arrows generation
 * Types abbreviations
+* Yesod Haskell web framework
 
 Most of this functionality is achieved by using already available tools and
 already available Vim plugins for those tools. So I'll assume you have your way
@@ -86,6 +87,8 @@ au FileType haskell setlocal makeprg=stack
 au FileType haskell nnoremap <buffer> gj :write<CR> :exec "AsyncRun " . &makeprg . " build"<CR>
 au FileType haskell nnoremap <buffer> gk :write<CR> :exec "AsyncRun " . &makeprg . " test"<CR>
 ```
+
+After running one of those the results will be loaded into the quickfix list.
 
 You will need the Stack tool of course and *hlint* that you can install with
 `stack install hlint`.
@@ -335,3 +338,24 @@ au FileType haskell inoreab <buffer> io IO ()
 
 Now I can type all lower case without having to bother with the *shift* key and
 the capitalized version will be inserted instead.
+
+
+### Yesod Haskell web framework
+
+Some neat integration with Yesod can be achieved by using the
+[vim-yesod](https://github.com/alx741/vim-yesod) plugin which, by default, gives
+you some mappings:
+
+`gh` - Jump to the handler of the route under the cursor in the `config/routes`
+file.
+
+`gH` - Create a new handler for the route under the cursor in the
+`config/routes` file.
+
+`gm` - Jump to or create the i18n message under the cursor in a template file.
+
+*vim-yesod* gives you `config/routes`, `config/models` and i18n `messages/`
+syntax highlighting, but it doesn't support shakesperean templates syntax so be
+sure to install the
+[vim-syntax-shakespeare](https://github.com/pbrisbin/vim-syntax-shakespeare) as
+well.
