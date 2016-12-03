@@ -13,6 +13,7 @@ put some extra magic under our sleeves.
     * Testing
 * GHCI integration
 * Convenient mappings
+    * Argument text object
     * Jump to importations
     * Jump between functions
 * Ghc-mod integration
@@ -117,6 +118,41 @@ au FileType haskell nmap <silent><buffer> <leader>gs :call RunGhci(0)<CR>
 So doing `\gg` will start a GHCI session loaded with the current file and `\gs`
 will load a GHCI session for the current stack project.
 
+
+### Convenient mappings
+
+When editing a function's arguments we would like to have a text object so doing
+`cia` (change inner argument) or `daa` (delete all argument) will work; These
+will to the trick:
+
+```vim
+au FileType haskell onoremap <silent> ia :<c-u>silent execute "normal! ?->\r:nohlsearch\rwvf-ge"<CR>
+au FileType haskell onoremap <silent> aa :<c-u>silent execute "normal! ?->\r:nohlsearch\rhvEf-ge"<CR>
+```
+
+In order to easily jump between functions we could define a function:
+
+```vim
+function! JumpHaskellFunction(reverse)
+    call search('\C[[:alnum:]]*\s*::', a:reverse ? 'bW' : 'W')
+endfunction
+```
+
+And some mappings, so doing `[[` or `]]` will takes us to the previous or next
+function:
+
+```vim
+au FileType haskell nnoremap <buffer><silent> ]] :call JumpHaskellFunction(0)<CR>
+au FileType haskell nnoremap <buffer><silent> [[ :call JumpHaskellFunction(1)<CR>
+```
+
+Lets add some extra convenience and use `gI` for jumping to the first *import*
+statement and `gC` to edit the *.cabal* file:
+
+```vim
+au FileType haskell nnoremap <buffer> gI gg /\cimport<CR><ESC>:noh<CR>
+au FileType haskell nnoremap <buffer> gC :e *.cabal<CR>
+```
 
 ### Ghc-mod integration
 
