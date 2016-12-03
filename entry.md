@@ -242,16 +242,18 @@ the arrows.
 
 ### Types abbreviations
 
-Maybe i'm a terrible typist, but writing the first upper case letter of the most
-common types hurst my pinkie. So by using some insert mode abbreviations:
+Maybe I'm a terrible typist, but writing the first upper case letter of the most
+common types hurts my pinkie. So by using some insert mode abbreviations:
 
-    au FileType haskell inoreab <buffer> int Int
-    au FileType haskell inoreab <buffer> integer Integer
-    au FileType haskell inoreab <buffer> string String
-    au FileType haskell inoreab <buffer> double Double
-    au FileType haskell inoreab <buffer> float Float
-    au FileType haskell inoreab <buffer> true True
-    au FileType haskell inoreab <buffer> false False
+```vim
+au FileType haskell inoreab <buffer> int Int
+au FileType haskell inoreab <buffer> integer Integer
+au FileType haskell inoreab <buffer> string String
+au FileType haskell inoreab <buffer> double Double
+au FileType haskell inoreab <buffer> float Float
+au FileType haskell inoreab <buffer> true True
+au FileType haskell inoreab <buffer> false False
+```
 
 Now I can type all lower case without having to bother with the *shift* key and
 the capitalized version will be inserted instead.
