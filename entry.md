@@ -133,35 +133,26 @@ For toggling the location list `gl<space` and cleaning the lints `glc`.
 
 ### Code formatting, Code cleaning
 
-Lets define a function that remove trailing white spaces, remove any `tab` and
-convert it to `spaces`, do re-indentation, and temporally define `formatprg` to
-use [hindent](https://github.com/chrisdone/hindent) to format the code.
+*Hindent* allows to beautify Haskell code, you could used it by setting the
+`formatprg` option and then trigger it with the `=` command, but there is a
+problem: if your code happens to have any syntax errors, it will be replaced
+with a nasty error message. To handle this we're going to use the
+[vim-hindent](https://github.com/alx741/vim-hindent) plugin instead, so each
+time we save a Haskell source file it will be automatically beatified.
 
-You can install *hindent* with stack as well: `stack install hindent`.
+Don't forget to configure it:
 
-    function! Format()
-        silent! execute 'norm! mz'
-
-        if &ft ==? 'haskell'
-            setlocal formatprg=hindent\ --style\ chris-done
-            silent! execute 'norm! gggqG'
-        endif
-
-        silent! call RemoveTrailingSpaces()
-        silent! execute 'retab'
-        silent! execute 'gg=G'
-        silent! execute 'norm! `z'
-        setlocal formatprg=
-    endfunction
-
-
-Now we could use `g=` to invoke the function:
-
-    nnoremap <silent>g= :call Format()<CR>
+```vim
+let g:hindent_on_save = 1
+let g:hindent_line_length = 80
+let g:hindent_indent_size = 4
+```
 
 One extra thing left is to align stuff in the code so it looks nicer
 
-    au FileType haskell nmap <silent><buffer> g<space> vii<ESC>:silent!'<,'> EasyAlign /->/<CR>
+```vim
+au FileType haskell nmap <silent><buffer> g<space> vii<ESC>:silent!'<,'> EasyAlign /->/<CR>
+```
 
 Take for instance this very dumb example for the sake of the argument:
 
