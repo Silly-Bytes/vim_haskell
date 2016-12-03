@@ -198,23 +198,36 @@ So much better!
 In Haskell, operators like `->` and `=>` are very common and I find it
 cumbersome to type theme manually. Lets define a function:
 
-    function! Make_arrow(type)
-        if a:type
-            exe "norm! a-> "
-            exe "startinsert!"
+```vim
+function! Make_arrow(type)
+    if a:type
+        if (matchstr(getline('.'), '\%' . col('.') . 'c.') ==? ' ')
+            exe "norm! a->  "
         else
-            exe "norm! a=> "
-            exe "startinsert!"
+            exe "norm! a ->  "
         endif
-    endfunction
+        exe "startreplace"
+    else
+        if (matchstr(getline('.'), '\%' . col('.') . 'c.') ==? ' ')
+            exe "norm! a=>  "
+        else
+            exe "norm! a =>  "
+        endif
+        exe "startreplace"
+    endif
+endfunction
+```
 
 And some insert mode mappings:
 
-    au FileType haskell inoremap <buffer> ;; <ESC>:call Make_arrow(1)<CR>
-    au FileType haskell inoremap <buffer> ;: <ESC>:call Make_arrow(0)<CR>
+```vim
+au FileType haskell inoremap <buffer> ;; <ESC>:call Make_arrow(1)<CR>
+au FileType haskell inoremap <buffer> ;: <ESC>:call Make_arrow(0)<CR>
+```
 
 So while in insert mode typing `;;` or `;:` will insert `->` or `=>`
-respectively.
+respectively. Additionally it will avoid duplicated spaces between the types and
+the arrows.
 
 
 ### Types abbreviations
