@@ -11,13 +11,19 @@ put some extra magic under our sleeves.
     * Building
     * Linting
     * Testing
+* GHCI integration
+* Convenient mappings
     * Jump to importations
+    * Jump between functions
 * Ghc-mod integration
     * Type inserting
     * Case splitting
     * Type asserting
 * Hlint integration
+    * Linting
+    * Managing the locationlist
 * Code formatting
+    * Hindent integration
     * Trailing white space
     * Trailing blank lines
     * Spaces over tabs
@@ -81,6 +87,35 @@ au FileType haskell nnoremap <buffer> gk :write<CR> :exec "AsyncRun " . &makeprg
 
 You will need the Stack tool of course and *hlint* that you can install with
 `stack install hlint`.
+
+
+### GHCI integration
+
+There are plugins that offer much more tight integration, but for me it is
+enough to start GHCI from the current vim instance in a Tmux pane loaded with
+the current project or Haskell source, so taking advantage of the
+[vimux](https://github.com/benmills/vimux) Tmux integration plugin, lets define
+a function:
+
+```vim
+function! RunGhci(type)
+    call VimuxRunCommand(" stack ghci && exit")
+    if a:type
+        call VimuxSendText(":l " . bufname("%"))
+        call VimuxSendKeys("Enter")
+    endif
+endfunction
+```
+
+And some mappings:
+
+```vim
+au FileType haskell nmap <silent><buffer> <leader>gg :call RunGhci(1)<CR>
+au FileType haskell nmap <silent><buffer> <leader>gs :call RunGhci(0)<CR>
+```
+
+So doing `\gg` will start a GHCI session loaded with the current file and `\gs`
+will load a GHCI session for the current stack project.
 
 
 ### Ghc-mod integration
@@ -150,7 +185,7 @@ So now is possible to toggle the location list with `gl<space>` and clear it
 with `glc`.
 
 
-### Code formatting, Code cleaning
+### Code formatting and beautifying
 
 *Hindent* allows to beautify Haskell code, you could used it by setting the
 `formatprg` option and then trigger it with the `=` command, but there is a
