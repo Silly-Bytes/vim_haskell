@@ -42,12 +42,14 @@ Here is my complete
 
 **Important**: Every line of vimrc used should be enclosed in an `:h :augroup`:
 
-    augroup ft_haskell
-        au!
+```vim
+augroup ft_haskell
+    au!
 
-        ...
+    ...
 
-    augroup END
+augroup END
+```
 
 
 ### Omnicompletion
@@ -55,7 +57,9 @@ Here is my complete
 The [neco-ghc](https://github.com/eagletmt/neco-ghc) plugin declares a complete
 omnifunction. Use it by defining the local `omnifunc`:
 
-    au FileType haskell setlocal omnifunc=necoghc#omnifunc
+```vim
+au FileType haskell setlocal omnifunc=necoghc#omnifunc
+```
 
 ![](./omni.gif)
 
@@ -70,10 +74,7 @@ here: https://github.com/alx741/ghc.vim
 Then load it for the Haskell filetype in you vimrc:
 
 ```vim
-augroup ft_haskell
-    au!
-    au FileType haskell compiler ghc
-augroup END
+au FileType haskell compiler ghc
 ```
 
 Taking advantage of vim 8 asynchronous job control using the
@@ -167,9 +168,11 @@ just a few:
 You need the *ghc-mod* package: `stack install ghc-mod` and the [ghcmod-vim
 plugin](https://github.com/eagletmt/ghcmod-vim).
 
-    au FileType haskell nnoremap <silent><buffer> git :GhcModTypeInsert<CR>
-    au FileType haskell nnoremap <silent><buffer> gfs :GhcModSplitFunCase<CR>
-    au FileType haskell nnoremap <silent><buffer> gtt :GhcModType<CR>
+```vim
+au FileType haskell nnoremap <silent><buffer> git :GhcModTypeInsert<CR>
+au FileType haskell nnoremap <silent><buffer> gfs :GhcModSplitFunCase<CR>
+au FileType haskell nnoremap <silent><buffer> gtt :GhcModType<CR>
+```
 
 
 `git` (*g insert type*) will insert the missing type declaration of an
@@ -324,6 +327,10 @@ au FileType haskell inoreab <buffer> double Double
 au FileType haskell inoreab <buffer> float Float
 au FileType haskell inoreab <buffer> true True
 au FileType haskell inoreab <buffer> false False
+au FileType haskell inoreab <buffer> maybe Maybe
+au FileType haskell inoreab <buffer> just Just
+au FileType haskell inoreab <buffer> nothing Nothing
+au FileType haskell inoreab <buffer> io IO ()
 ```
 
 Now I can type all lower case without having to bother with the *shift* key and
