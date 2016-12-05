@@ -283,7 +283,7 @@ So much better!
 ### Easy arrows generation
 
 In Haskell, operators like `->` and `=>` are very common and I find it
-cumbersome to type theme manually. Lets define a function:
+cumbersome to type them manually. Lets define a function:
 
 ```vim
 function! Make_arrow(type)
